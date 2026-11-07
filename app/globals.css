@@ -1,26 +1,194 @@
 @import "tailwindcss";
 
+/*
+ * Paleta KAWAII pastel — alegre y legible.
+ * Textos sobre blanco (y sobre los pasteles):
+ *   texto #4B3B5C ≈ 10:1 · texto-suave #6B5A7B ≈ 6.3:1 · acento #8A3D6E ≈ 7:1
+ *   placeholder #74647F ≈ 5.6:1 · error-texto #93365A ≈ 7:1   (todos ≥ 4.5:1, AA)
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Pasteles */
+  --rosa: #ffd6e8;
+  --lila: #e4d4ff;
+  --menta: #cff5e7;
+  --durazno: #ffe3cf;
+  --mantequilla: #fff3c4;
+  --celeste: #ddf1ff; /* solo detalles */
+
+  /* Versiones fuertes para bordes */
+  --rosa-fuerte: #f4a9c8;
+  --lila-fuerte: #c9a7ff;
+  --menta-fuerte: #8fdcc0;
+  --coral: #f2a08a;
+  --lila-foco: #a985f5;
+
+  /* Textos */
+  --texto: #4b3b5c;
+  --texto-suave: #6b5a7b;
+  --acento: #8a3d6e;
+  --error-texto: #93365a;
+  --placeholder: #74647f;
+
+  --panel: rgba(255, 255, 255, 0.92);
+  --sombra: 0 12px 30px -16px rgba(169, 133, 245, 0.55);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-rosa: var(--rosa);
+  --color-lila: var(--lila);
+  --color-menta: var(--menta);
+  --color-durazno: var(--durazno);
+  --color-mantequilla: var(--mantequilla);
+  --color-celeste: var(--celeste);
+  --color-rosa-fuerte: var(--rosa-fuerte);
+  --color-lila-fuerte: var(--lila-fuerte);
+  --color-menta-fuerte: var(--menta-fuerte);
+  --color-coral: var(--coral);
+  --color-lila-foco: var(--lila-foco);
+  --color-texto: var(--texto);
+  --color-texto-suave: var(--texto-suave);
+  --color-acento: var(--acento);
+  --color-error-texto: var(--error-texto);
+  --color-placeholder: var(--placeholder);
+  --font-sans: var(--font-nunito);
+  --font-display: var(--font-fredoka);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: #fff5fa;
+  color: var(--texto);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-nunito), system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--rosa);
+  color: var(--texto);
+}
+
+@layer components {
+  /* Superficie blanca casi opaca con borde pastel: tarjetas, paneles, modales, navbar */
+  .panel {
+    background: var(--panel);
+    border: 2px solid var(--lila-fuerte);
+    border-radius: 1.5rem;
+    box-shadow: var(--sombra);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  /* Inputs, selects y textareas */
+  .field {
+    width: 100%;
+    border-radius: 1rem;
+    border: 2px solid var(--rosa-fuerte);
+    background: #ffffff;
+    padding: 0.625rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--texto);
+    outline: none;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
+  }
+  .field::placeholder {
+    color: var(--placeholder);
+    font-weight: 500;
+    opacity: 1;
+  }
+  .field:hover:not(:disabled) {
+    border-color: #ec8fb7;
+  }
+  .field:focus {
+    border-color: var(--lila-foco);
+    box-shadow: 0 0 0 4px rgba(201, 167, 255, 0.35);
+  }
+  .field:disabled {
+    background: #faf6ff;
+    border-color: var(--lila-fuerte);
+    color: var(--texto-suave);
+    cursor: not-allowed;
+  }
+  .field[aria-invalid="true"] {
+    border-color: var(--error-texto);
+  }
+
+  /* Chip (los colores por tono se aplican con clases de utilidad) */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    border: 2px solid var(--lila-fuerte);
+    background: var(--lila);
+    padding: 0.2rem 0.75rem;
+    font-weight: 700;
+    color: var(--texto);
+  }
+
+  /* Burbuja blanca del ícono dentro de los botones */
+  .btn-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-left: -0.35rem;
+    border-radius: 9999px;
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.75);
+  }
+  .btn-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .group:hover:not(:disabled) .btn-icon svg {
+    animation: wiggle 0.5s ease-in-out;
+  }
+
+  /* Fondo pastel que se mueve despacio */
+  .kawaii-bg {
+    background: linear-gradient(120deg, #ffd6e8 0%, #e4d4ff 28%, #cff5e7 55%, #ffe3cf 80%, #ffd6e8 100%);
+    background-size: 300% 300%;
+    animation: gradient-shift 30s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-14deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-6deg);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
